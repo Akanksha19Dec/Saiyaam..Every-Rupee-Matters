@@ -1,73 +1,89 @@
-# React + TypeScript + Vite
+# Saiyaam — Every Rupee Matters 💰
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A luxury home-renovation budget tracker built with **React + TypeScript + Vite**. Track supplier payments, upload receipts, and monitor every rupee flowing into your dream project.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+🌐 **https://saiyaam-web.vercel.app**
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Financial Blueprint** — Central dashboard showing total budget, per-supplier entry cards, and payment tracking.
+- **Curated Partners (Suppliers)** — Visual supplier cards with brand images, invested capital, quotation status, and full payment history.
+- **Payment Tracking** — Enter payment amount, date, and attach a receipt for each transaction directly from the Blueprint screen.
+- **Receipt Upload** — Upload PDF/image receipts per payment; files are saved locally (localhost only) and viewable from the Supplier tab.
+- **Quotation Value** — Manually editable quotation value per supplier with automatic paid-percentage calculation.
+- **LocalStorage Persistence** — All data persists across browser sessions. Your budget data is never lost.
+- **Responsive Design** — Dark-themed, enterprise-grade UI with CSS Grid layout.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Layer | Technology |
+|-------|-----------|
+| UI | React 19 + TypeScript |
+| Build | Vite 8 |
+| Styling | Custom CSS (CSS Grid, custom properties) |
+| Persistence | Browser LocalStorage |
+| Receipt Storage | Vite dev server plugin (localhost) |
+| Deployment | Vercel |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Prerequisites
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Node.js** 18+ and **npm**
+
+### Install & Run
+
+```bash
+# Clone the repository
+git clone https://github.com/Akanksha19Dec/Saiyaam..Every-Rupee-Matters.git
+cd Saiyaam..Every-Rupee-Matters
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The app will be available at **http://localhost:5173/**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Build for Production
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
+npm run preview
 ```
+
+## How to Use
+
+1. **Set Total Budget** — Click the budget card at the top and enter your total renovation budget.
+2. **Add a Supplier** — In the Financial Blueprint tab, use the supplier dropdown to select a supplier from the predefined list.
+3. **Make a Payment** — Enter the payment amount, pick the date, optionally upload a receipt, and click **Save Payment**.
+4. **Set Quotation Value** — Expand the entry and manually type the supplier's quotation value. The paid percentage updates automatically.
+5. **View Supplier Details** — Switch to the **Suppliers** tab to see all partners as visual cards with their payment history and receipt links.
+6. **Upload Receipts** — When running locally, uploaded receipts are saved to a `receipt/` folder at the project root and can be viewed from the Supplier tab.
+
+## Project Structure
+
+```
+saiyaam-web/
+├── public/
+│   ├── brands/          # Supplier brand images (PNG + SVG)
+│   └── ganapati.jpg     # Header image
+├── src/
+│   ├── App.tsx          # Main application (all components + logic)
+│   ├── App.css          # All styles
+│   ├── main.tsx         # Entry point
+│   └── index.css        # Global resets
+├── vite-receipt-plugin.ts  # Vite dev server plugin for receipt upload
+├── vite.config.ts
+└── package.json
+```
+
+## Notes
+
+- **Receipt upload** works only on localhost (Vite dev server middleware). On Vercel, receipts cannot be saved to disk.
+- All budget/payment data is stored in **localStorage** under the key `saiyaam_budget_tracker_v1`.
+- To reset all data, clear localStorage in your browser DevTools.
