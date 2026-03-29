@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0a1a"/>
+      <stop offset="50%" stop-color="#1a1a35"/>
+      <stop offset="100%" stop-color="#050510"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <circle cx="400" cy="160" r="50" fill="none" stroke="#f6cd58" stroke-width="2" opacity="0.3"/>
+  <circle cx="400" cy="160" r="80" fill="none" stroke="#f6cd58" stroke-width="1" opacity="0.15"/>
+  <path d="M390 130 L380 170 L395 165 L385 200" fill="none" stroke="#f6cd58" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M410 120 L398 165 L415 158 L402 205" fill="none" stroke="#1ce4ea" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="400" y="280" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="700" fill="#e8f5ff" letter-spacing="4">LIGHTNING</text>
+  <text x="400" y="310" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#8aa2c8" letter-spacing="3">BESPOKE LIGHTING SOLUTIONS</text>
+</svg>

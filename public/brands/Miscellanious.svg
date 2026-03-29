@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1a1f"/>
+      <stop offset="50%" stop-color="#2a2a35"/>
+      <stop offset="100%" stop-color="#101018"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <circle cx="400" cy="140" r="45" fill="none" stroke="#8aa2c8" stroke-width="1.5" opacity="0.3"/>
+  <path d="M380 125 L400 145 L420 115" fill="none" stroke="#1ce4ea" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  <path d="M375 155 L400 170 L425 155" fill="none" stroke="#8aa2c8" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+  <text x="400" y="260" text-anchor="middle" font-family="sans-serif" font-size="34" font-weight="700" fill="#e8f5ff" letter-spacing="3">MISCELLANEOUS</text>
+  <text x="400" y="295" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#8aa2c8" letter-spacing="3">GENERAL WORKS</text>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#18102e"/>
+      <stop offset="50%" stop-color="#32206a"/>
+      <stop offset="100%" stop-color="#100c20"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <circle cx="370" cy="140" r="30" fill="none" stroke="#c89eff" stroke-width="1.5" opacity="0.4"/>
+  <circle cx="430" cy="130" r="20" fill="none" stroke="#1ce4ea" stroke-width="1.5" opacity="0.35"/>
+  <path d="M350 170 Q400 100 450 170" fill="none" stroke="#c89eff" stroke-width="1.5" opacity="0.3"/>
+  <polygon points="400,90 410,115 435,115 415,130 422,155 400,140 378,155 385,130 365,115 390,115" fill="none" stroke="#f6cd58" stroke-width="1.5" opacity="0.3"/>
+  <text x="400" y="260" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="700" fill="#e8f5ff" letter-spacing="2">DECORATIVE</text>
+  <text x="400" y="295" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#c89eff" letter-spacing="3">DECOR &amp; ACCESSORIES</text>
+</svg>
