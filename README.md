@@ -12,6 +12,7 @@ A luxury home-renovation budget tracker built with **React + TypeScript + Vite**
 - **Curated Partners (Suppliers)** — Visual supplier cards with brand images, invested capital, quotation status, and full payment history.
 - **Payment Tracking** — Enter payment amount, date, and attach a receipt for each transaction directly from the Blueprint screen.
 - **Receipt Upload** — Upload PDF/image receipts per payment; files are saved locally (localhost only) and viewable from the Supplier tab.
+- **Delete Vendor Entry** — Remove any supplier entry from the Blueprint screen with a single click (with confirmation). The Supplier tab updates automatically.
 - **Quotation Value** — Manually editable quotation value per supplier with automatic paid-percentage calculation.
 - **LocalStorage Persistence** — All data persists across browser sessions. Your budget data is never lost.
 - **Responsive Design** — Dark-themed, enterprise-grade UI with CSS Grid layout.
@@ -64,6 +65,7 @@ npm run preview
 4. **Set Quotation Value** — Expand the entry and manually type the supplier's quotation value. The paid percentage updates automatically.
 5. **View Supplier Details** — Switch to the **Suppliers** tab to see all partners as visual cards with their payment history and receipt links.
 6. **Upload Receipts** — When running locally, uploaded receipts are saved to a `receipt/` folder at the project root and can be viewed from the Supplier tab.
+7. **Delete a Vendor** — Click the red **×** button on any entry card in the Blueprint screen to remove it. A confirmation dialog will appear. The Supplier tab updates automatically.
 
 ## Project Structure
 

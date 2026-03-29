@@ -304,9 +304,34 @@ select {
 
 .entry-top {
   display: grid;
-  grid-template-columns: 1fr 1.1fr 0.9fr 1fr 0.9fr 0.5fr;
+  grid-template-columns: 1fr 1.1fr 0.9fr 1fr 0.9fr 0.5fr auto;
   gap: 14px;
   align-items: start;
+}
+
+.delete-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 22px;
+}
+
+.delete-entry-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #5a2a2a;
+  background: rgba(180, 40, 40, 0.15);
+  color: #ff6b6b;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.delete-entry-btn:hover {
+  background: rgba(220, 50, 50, 0.35);
+  color: #ff4040;
 }
 
 .date-input {

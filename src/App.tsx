@@ -546,6 +546,22 @@ function App() {
                       <p className="small-label">Paid Status</p>
                       <strong className="paid-status">{paid}%</strong>
                     </div>
+
+                    <div className="delete-col">
+                      <button
+                        className="delete-entry-btn"
+                        type="button"
+                        title="Delete this entry"
+                        onClick={() => {
+                          if (window.confirm(`Delete ${entry.supplier} entry? This cannot be undone.`)) {
+                            const next = { ...appState, entries: appState.entries.filter((_, i) => i !== index) }
+                            setAndPersist(next)
+                          }
+                        }}
+                      >
+                        ×
+                      </button>
+                    </div>
                   </div>
 
                   <div className="entry-bottom">
