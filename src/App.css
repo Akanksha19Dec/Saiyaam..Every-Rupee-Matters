@@ -187,6 +187,82 @@ body {
   padding: 24px 24px;
 }
 
+/* Budget vs Quotation Chart */
+.budget-vs-quotation {
+  margin-top: 24px;
+  padding: 24px;
+}
+
+.bvq-chart {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.bvq-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 150px;
+  align-items: center;
+  gap: 16px;
+}
+
+.bvq-label {
+  font-size: 13px;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+
+.bvq-bar-track {
+  height: 28px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bvq-bar {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  min-width: 4px;
+}
+
+.bvq-bar--budget {
+  background: linear-gradient(90deg, var(--teal), #14b8c0);
+}
+
+.bvq-bar--quotation {
+  background: linear-gradient(90deg, var(--gold), #e0b840);
+}
+
+.bvq-bar--over {
+  background: linear-gradient(90deg, #ff6b6b, #ee5a5a);
+}
+
+.bvq-value {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.bvq-diff {
+  text-align: center;
+  font-size: 13px;
+  padding-top: 4px;
+  border-top: 1px solid var(--line);
+}
+
+.bvq-diff--under {
+  color: var(--teal);
+}
+
+.bvq-diff--over {
+  color: #ff6b6b;
+}
+
 .section-title-row {
   display: flex;
   align-items: center;
@@ -394,6 +470,24 @@ select {
 
 .quotation-manual-input {
   min-width: 0;
+}
+
+.quotation-input-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.quotation-upload-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.quotation-upload-btn {
+  white-space: nowrap;
 }
 
 .upload-btn {
@@ -751,6 +845,22 @@ select {
   color: var(--text-main);
 }
 
+.partner-remaining-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+  padding: 10px;
+  background: rgba(28, 228, 234, 0.08);
+  border-radius: 8px;
+}
+
+.partner-remaining-amount {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--teal);
+}
+
 .partner-quotation-row {
   display: flex;
   align-items: center;
@@ -792,6 +902,11 @@ select {
   font-size: 13px;
   cursor: pointer;
   padding: 0;
+  text-decoration: none;
+}
+
+.view-quotation-link:hover {
+  text-decoration: underline;
 }
 
 .no-quote-label {

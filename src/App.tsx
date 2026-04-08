@@ -12,7 +12,9 @@ const SUPPLIERS = [
   'Furniture',
   'Decorative Items',
   'Kids Rooms Vendors',
-  'Miscellanious'
+  'Miscellanious',
+  'Home Registration',
+  'Home Inauguration'
 ] as const
 
 type SupplierName = (typeof SUPPLIERS)[number]
@@ -26,7 +28,9 @@ const SUPPLIER_CATEGORIES: Record<SupplierName, string> = {
   Furniture: 'Custom Furniture',
   'Decorative Items': 'Decor & Accessories',
   'Kids Rooms Vendors': "Children's Spaces",
-  Miscellanious: 'Miscellaneous Works'
+  Miscellanious: 'Miscellaneous Works',
+  'Home Registration': 'Property Registration',
+  'Home Inauguration': 'Inauguration Events'
 }
 
 const SUPPLIER_IMAGES: Record<SupplierName, string> = {
@@ -34,11 +38,13 @@ const SUPPLIER_IMAGES: Record<SupplierName, string> = {
   Lifeston: '/brands/Lifeston.png',
   MaterialDepo: '/brands/MaterialDepo.png',
   GardenOfJoy: '/brands/GardenOfJoy.png',
-  Lightning: '/brands/Lightning.svg',
-  Furniture: '/brands/Furniture.svg',
-  'Decorative Items': '/brands/Decorative%20Items.svg',
-  'Kids Rooms Vendors': '/brands/Kids%20Rooms%20Vendors.svg',
-  Miscellanious: '/brands/Miscellanious.svg'
+  Lightning: '/brands/Lightning.png',
+  Furniture: '/brands/Furniture.png',
+  'Decorative Items': '/brands/Decorative%20Items.png',
+  'Kids Rooms Vendors': '/brands/Kids%20Rooms%20Vendors.png',
+  Miscellanious: '/brands/Miscellanious.svg',
+  'Home Registration': '/brands/Home%20Registration.png',
+  'Home Inauguration': '/brands/Home%20Inauguration.jpg'
 }
 
 type PaymentRecord = {
@@ -272,14 +278,16 @@ function App() {
   const [paymentAmounts, setPaymentAmounts] = useState<Record<string, string>>({})
   const [paymentDates, setPaymentDates] = useState<Record<string, string>>({})
   const [pendingReceipts, setPendingReceipts] = useState<Record<string, File | null>>({})
+  const [pendingQuotations, setPendingQuotations] = useState<Record<string, File | null>>({})
 
   const totals = useMemo(() => {
     const totalInvested = appState.entries.reduce((sum, entry) => sum + entry.investedTillNow, 0)
+    const totalQuotation = appState.entries.reduce((sum, entry) => sum + entry.quotationValue, 0)
     const utilization = appState.totalBudget > 0
       ? Math.min(100, Math.round((totalInvested / appState.totalBudget) * 100))
       : 0
     const remaining = Math.max(0, appState.totalBudget - totalInvested)
-    return { totalInvested, utilization, remaining }
+    return { totalInvested, totalQuotation, utilization, remaining }
   }, [appState.entries, appState.totalBudget])
 
   const filteredEntries = useMemo(() => {
@@ -345,6 +353,41 @@ function App() {
     setPaymentAmounts((prev) => ({ ...prev, [entryId]: '' }))
     setPaymentDates((prev) => ({ ...prev, [entryId]: new Date().toISOString().split('T')[0] }))
     setPendingReceipts((prev) => ({ ...prev, [entryId]: null }))
+  }
+
+  const uploadFinalQuotation = async (entryId: string) => {
+    const file = pendingQuotations[entryId]
+    if (!file) return
+
+    const entry = appState.entries.find((e) => e.id === entryId)
+    if (!entry) return
+
+    try {
+      const resp = await fetch('/api/upload-quotation', {
+        method: 'POST',
+        headers: {
+          'x-supplier': encodeURIComponent(entry.supplier),
+          'x-original-name': encodeURIComponent(file.name)
+        },
+        body: file
+      })
+      const result = await resp.json()
+      if (result.ok) {
+        const nextEntries = appState.entries.map((e) =>
+          e.id === entryId
+            ? {
+                ...e,
+                fileName: result.fileName,
+                lastUpdated: new Date().toISOString().split('T')[0]
+              }
+            : e
+        )
+        setAndPersist({ ...appState, entries: nextEntries })
+        setPendingQuotations((prev) => ({ ...prev, [entryId]: null }))
+      }
+    } catch {
+      // upload failed silently, user can retry
+    }
   }
 
   return (
@@ -428,6 +471,48 @@ function App() {
           </div>
         </section>
 
+        <section className="budget-vs-quotation card">
+          <div className="section-title-row">
+            <h3>Budget vs Total Quotation</h3>
+          </div>
+          {(() => {
+            const budget = appState.totalBudget
+            const quotation = totals.totalQuotation
+            const maxVal = Math.max(budget, quotation, 1)
+            const budgetPct = (budget / maxVal) * 100
+            const quotationPct = (quotation / maxVal) * 100
+            const overBudget = quotation > budget
+            return (
+              <div className="bvq-chart">
+                <div className="bvq-row">
+                  <span className="bvq-label">Your Budget</span>
+                  <div className="bvq-bar-track">
+                    <div className="bvq-bar bvq-bar--budget" style={{ width: `${budgetPct}%` }} />
+                  </div>
+                  <span className="bvq-value">{formatINR(budget)}</span>
+                </div>
+                <div className="bvq-row">
+                  <span className="bvq-label">Total Quotation</span>
+                  <div className="bvq-bar-track">
+                    <div
+                      className={`bvq-bar bvq-bar--quotation${overBudget ? ' bvq-bar--over' : ''}`}
+                      style={{ width: `${quotationPct}%` }}
+                    />
+                  </div>
+                  <span className="bvq-value">{formatINR(quotation)}</span>
+                </div>
+                <div className="bvq-diff">
+                  {overBudget ? (
+                    <span className="bvq-diff--over">Quotations exceed budget by <strong>{formatINR(quotation - budget)}</strong></span>
+                  ) : (
+                    <span className="bvq-diff--under">Budget has <strong>{formatINR(budget - quotation)}</strong> headroom over quotations</span>
+                  )}
+                </div>
+              </div>
+            )
+          })()}
+        </section>
+
         <section className="entries-block">
           <div className="entries-head">
             <h3>Investment Entries</h3>
@@ -490,9 +575,10 @@ function App() {
                         <span className="currency">{"\u20B9"}</span>
                         <input
                           className="invested-input"
-                          value={paymentAmounts[entry.id] || ''}
+                          value={paymentAmounts[entry.id] ? Number(paymentAmounts[entry.id].replace(/\D/g, '')).toLocaleString('en-IN') : ''}
                           onChange={(event) => {
-                            setPaymentAmounts((prev) => ({ ...prev, [entry.id]: event.target.value }))
+                            const digits = event.target.value.replace(/\D/g, '')
+                            setPaymentAmounts((prev) => ({ ...prev, [entry.id]: digits }))
                           }}
                           type="text"
                           inputMode="numeric"
@@ -567,19 +653,47 @@ function App() {
                   <div className="entry-bottom">
                     <div>
                       <p className="small-label">Quotation Value</p>
-                      <div className="amount-input-wrap compact quotation-manual-wrap">
-                        <span className="currency">{'\u20B9'}</span>
-                        <input
-                          className="invested-input quotation-manual-input"
-                          value={entry.quotationValue}
-                          onChange={(event) => {
-                            const next = parseCurrencyInput(event.target.value)
-                            updateEntry(index, (current) => ({ ...current, quotationValue: next }))
-                          }}
-                          type="text"
-                          inputMode="numeric"
-                        />
+                      <div className="quotation-input-row">
+                        <div className="amount-input-wrap compact quotation-manual-wrap">
+                          <span className="currency">{'\u20B9'}</span>
+                          <input
+                            className="invested-input quotation-manual-input"
+                            value={entry.quotationValue ? entry.quotationValue.toLocaleString('en-IN') : ''}
+                            onChange={(event) => {
+                              const next = parseCurrencyInput(event.target.value)
+                              updateEntry(index, (current) => ({ ...current, quotationValue: next }))
+                            }}
+                            type="text"
+                            inputMode="numeric"
+                            placeholder="Enter quotation"
+                          />
+                        </div>
+                        <div className="quotation-upload-actions">
+                          <label className="upload-btn quotation-upload-btn">
+                            {pendingQuotations[entry.id]?.name ? 'Change Final Quotation' : 'Upload Final Quotation'}
+                            <input
+                              type="file"
+                              accept=".pdf,.png,.jpg,.jpeg,.webp"
+                              hidden
+                              onChange={(event) => {
+                                const file = event.target.files?.[0]
+                                if (file) {
+                                  setPendingQuotations((prev) => ({ ...prev, [entry.id]: file }))
+                                }
+                              }}
+                            />
+                          </label>
+                          <button
+                            className="save-payment-btn"
+                            type="button"
+                            onClick={() => uploadFinalQuotation(entry.id)}
+                            disabled={!pendingQuotations[entry.id]}
+                          >
+                            Save Quotation
+                          </button>
+                        </div>
                       </div>
+                      <p className="tiny file-name">{pendingQuotations[entry.id]?.name || entry.fileName || 'No final quotation uploaded'}</p>
                     </div>
                     <div>
                       <p className="small-label">Amount Paid</p>
@@ -619,6 +733,7 @@ function App() {
 
             <div className="partners-grid">
               {filteredEntries.map((entry) => {
+                const remainingContract = Math.max(0, entry.quotationValue - entry.investedTillNow)
                 return (
                   <article key={entry.id} className="partner-card card">
                     <div className="partner-hero">
@@ -641,13 +756,18 @@ function App() {
                         <span className="partner-amount">{formatINR(entry.investedTillNow)}</span>
                       </div>
 
+                      <div className="partner-remaining-row">
+                        <span className="partner-inv-label">Remaining to fulfil contract</span>
+                        <span className="partner-remaining-amount">{formatINR(remainingContract)}</span>
+                      </div>
+
                       <div className="partner-quotation-row">
                         <span className="doc-icon-wrap"><DocIcon /></span>
                         <div className="partner-quot-detail">
                           <span className="partner-quot-key">Quotation Status</span>
                           {entry.quotationValue > 0 ? (
                             <span className="quot-status-paid">
-                              Paid: <strong>{formatINR(entry.quotationValue)}</strong>
+                              To be Paid: <strong>{formatINR(entry.quotationValue)}</strong>
                             </span>
                           ) : (
                             <span className="quot-status-none">No Quote Yet</span>
@@ -657,9 +777,14 @@ function App() {
 
                       <div className="partner-footer-row">
                         {entry.fileName ? (
-                          <button className="view-quotation-link" type="button">
+                          <a
+                            className="view-quotation-link"
+                            href={`/quotations/${encodeURIComponent(entry.fileName)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
                             <DocIcon /> View Quotation
-                          </button>
+                          </a>
                         ) : (
                           <span className="no-quote-label">
                             <DocIcon /> No Quote Uploaded
